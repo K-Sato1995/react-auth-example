@@ -5,6 +5,8 @@ import Admin from "./pages/Admin";
 import "./App.css";
 import { AuthContext } from "./context/auth";
 import PrivateRoute from "./PrivateRoute";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           </ul>
           <Route exact path="/" component={Home} />
           <PrivateRoute path="/admin" component={Admin} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
         </div>
       </Router>
     </AuthContext.Provider>

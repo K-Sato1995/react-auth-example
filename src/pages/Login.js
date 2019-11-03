@@ -1,13 +1,11 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../context/auth";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../context/AuthProvider";
 
 function Login() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const { setAuthTokens } = useAuth();
+  const { authData, setAuthData } = useContext(AuthContext);
   const history = useHistory();
   const handleLogin = useCallback(
     async e => {
@@ -23,7 +21,7 @@ function Login() {
           }
         );
         console.log(response);
-        setLoggedIn(true);
+        setAuthData(response);
         history.push("/admin");
       } catch (error) {
         //Fix: より良いエラーハンドリングする。
@@ -33,7 +31,7 @@ function Login() {
     [history]
   );
 
-  if (isLoggedIn) {
+  if (authData) {
     return <Redirect to="/" />;
   }
   return (

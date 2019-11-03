@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 
 function Login() {
-  const { authData, setAuthData } = useContext(AuthContext);
+  const { authData, setTokens } = useContext(AuthContext);
   const history = useHistory();
   const handleLogin = useCallback(
     async e => {
@@ -20,8 +20,7 @@ function Login() {
             password: password.value
           }
         );
-        console.log(response);
-        setAuthData(response);
+        setTokens(response.headers["access-token"]);
         history.push("/admin");
       } catch (error) {
         //Fix: より良いエラーハンドリングする。

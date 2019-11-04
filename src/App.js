@@ -29,15 +29,13 @@ function App() {
   });
 
   const authLink = setContext((_, { headers }) => {
-    const accessToken = tokens["access-token"];
-    const clientData = tokens["client"];
-    const uid = tokens["uid"];
+    const token = JSON.parse(localStorage.getItem("access-token"));
     return {
       headers: {
         ...headers,
-        "access-token": accessToken,
-        client: clientData,
-        uid: uid
+        "access-token": token["access-token"],
+        client: token["client"],
+        uid: token["uid"]
       }
     };
   });

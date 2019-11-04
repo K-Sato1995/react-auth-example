@@ -1,41 +1,13 @@
 import React, { useState, useContext, useCallback } from "react";
-import { Link, Redirect } from "react-router-dom";
-import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import { useHistory } from "react-router-dom";
 
 function Login() {
-  const { authData, setTokens } = useContext(AuthContext);
-  const history = useHistory();
-  const handleLogin = useCallback(
-    async e => {
-      e.preventDefault();
-      const { email, password } = e.target.elements;
-      try {
-        console.log(email.value, password.value);
-        let response = await axios.post(
-          "http://localhost:3000/api/v1/oc/auth/sign_in",
-          {
-            email: email.value,
-            password: password.value
-          }
-        );
-        setTokens(response.headers["access-token"]);
-        history.push("/admin");
-      } catch (error) {
-        //Fix: より良いエラーハンドリングする。
-        alert(error);
-      }
-    },
-    [history]
-  );
-
-  if (authData) {
-    return <Redirect to="/" />;
-  }
+  const { login } = useContext(AuthContext);
   return (
     <div>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={login}>
         <input type="email" name="email" placeholder="email" />
         <input type="password" name="password" placeholder="password" />
         <button>Sign In</button>

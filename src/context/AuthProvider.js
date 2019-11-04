@@ -4,6 +4,7 @@ import axios from "axios";
 export const AuthContext = createContext({});
 
 const AuthProvider = props => {
+  // user の値をセットする。
   const [user, setUser] = useState(null);
 
   const login = async (data, history) => {
@@ -40,6 +41,7 @@ const AuthProvider = props => {
       });
   };
 
+  // すでにログインしたユーざーは自動でセットする。
   const fetchUser = () => {
     let authenticated = user !== null;
     if (authenticated) {
@@ -66,6 +68,7 @@ const AuthProvider = props => {
     }
   };
 
+  // localStorageにトークンが存在するかチェックする。
   const isTokenSet = () => {
     if (localStorage.getItem("access-token") !== null) {
       return true;

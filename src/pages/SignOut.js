@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
-import { withRouter, Redirect } from "react-router";
+import { withRouter } from "react-router";
 
 function SignOut(history) {
   const { logout } = useContext(AuthContext);

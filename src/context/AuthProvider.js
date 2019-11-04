@@ -78,6 +78,7 @@ const AuthProvider = props => {
   };
 
   useEffect(() => {
+    console.log("effect runs");
     fetchUser();
   }, []);
 

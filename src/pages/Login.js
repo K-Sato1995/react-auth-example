@@ -18,6 +18,12 @@ const Login = ({ history }) => {
     );
   };
 
+  const { authenticated } = useContext(AuthContext);
+
+  if (authenticated) {
+    return <Redirect to="/admin" />;
+  }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>

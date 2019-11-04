@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
+import { withRouter, Redirect } from "react-router";
 
-function SignOut() {
-  const { setAuthData } = useContext(AuthContext);
+function SignOut(history) {
+  const { logout } = useContext(AuthContext);
 
-  function onLogout() {
-    setAuthData();
-  }
-  return <button onClick={onLogout}>Sign Out</button>;
+  const handleSubmit = e => {
+    e.preventDefault();
+    logout(history);
+  };
+
+  return <button onClick={handleSubmit}>Sign Out</button>;
 }
 
-export default SignOut;
+export default withRouter(SignOut);

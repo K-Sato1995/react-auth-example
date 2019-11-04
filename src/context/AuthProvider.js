@@ -15,49 +15,43 @@ const AuthProvider = props => {
   const logout = () => {
     setTokens();
     setCurrentUser();
-    localStorage.removeItem("accsess-token");
+    localStorage.removeItem("access-token");
   };
 
-  const validateAuth = () => {
+  const checkAuthData = () => {
     let authData = JSON.parse(localStorage.getItem("access-token"));
-    const accessToken = authData["access-token"];
-    const clientData = authData["client"];
-    const uid = authData["uid"];
-    let config = {
-      headers: { "access-token": accessToken, client: clientData, uid: uid }
-    };
 
+    if (authData) {
+      const accessToken = authData["access-token"];
+      const clientData = authData["client"];
+      const uid = authData["uid"];
+      let config = {
+        headers: { "access-token": accessToken, client: clientData, uid: uid }
+      };
+
+      axios
+        .get("http://localhost:3000/api/v1/oc/auth/validate_token", config)
+        .then(response => {
+          return response;
+        });
+    }
+  };
+
+  const login = async (data, history) => {
     axios
-      .get("http://localhost:3000/api/v1/oc/auth/validate_token", config)
+      .post("http://localhost:3000/api/v1/oc/auth/sign_in", data)
       .then(response => {
-        if (response.data.success === true) {
-          setAuthData(response.headers);
-          setCurrentUser(response.data.data);
-        }
+        setAuthData(response.headers);
+        setCurrentUser(response.data.data);
+        history.push("/admin");
+      })
+      .catch(error => {
+        alert(error);
       });
   };
 
-  const login = useCallback(async e => {
-    e.preventDefault();
-    const { email, password } = e.target.elements;
-    try {
-      let response = await axios.post(
-        "http://localhost:3000/api/v1/oc/auth/sign_in",
-        {
-          email: email.value,
-          password: password.value
-        }
-      );
-      setAuthData(response.headers);
-      setCurrentUser(response.data.data);
-    } catch (error) {
-      //Fix: より良いエラーハンドリングする。
-      alert(error);
-    }
-  }, []);
-
   useEffect(() => {
-    validateAuth();
+    checkAuthData();
   }, []);
 
   return (

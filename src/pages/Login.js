@@ -1,13 +1,26 @@
-import React, { useState, useContext, useCallback } from "react";
+import React, { useContext } from "react";
+import { withRouter, Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
-import { useHistory } from "react-router-dom";
 
-function Login() {
+const Login = ({ history }) => {
   const { login } = useContext(AuthContext);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const { email, password } = e.target.elements;
+    login(
+      {
+        email: email.value,
+        password: password.value
+      },
+      history
+    );
+  };
+
   return (
     <div>
-      <form onSubmit={login}>
+      <form onSubmit={handleSubmit}>
         <input type="email" name="email" placeholder="email" />
         <input type="password" name="password" placeholder="password" />
         <button>Sign In</button>
@@ -15,6 +28,6 @@ function Login() {
       <Link to="/signup">Don't have an account?</Link>
     </div>
   );
-}
+};
 
-export default Login;
+export default withRouter(Login);
